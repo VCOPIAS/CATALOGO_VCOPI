@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VCOPI - Catálogo Digital | Tu Impreso de Confianza</title>
+    <!-- Favicon PNG -->
+    <link rel="icon" type="image/png" href="FAVICON.png">
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Fredoka & Nunito -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            lime: '#BCEA00',
+                            limeHover: '#a2ce00',
+                            dark: '#181818',
+                            darkBg: '#121212',
+                            darkCard: '#1E1E1E',
+                            darkLight: '#282828',
+                            greyBg: '#F8FAFC',
+                            greyCard: '#FFFFFF'
+                        }
+                    },
+                    fontFamily: {
+                        heading: ['Fredoka', 'sans-serif'],
+                        body: ['Nunito', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+    /* Efecto hover y touch para las tarjetas del catálogo */
+#catalogGrid > div {
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+#catalogGrid > div:hover, 
+#catalogGrid > div:active {
+    transform: translateY(-6px);
+    box-shadow: 0 12px 25px -5px rgba(188, 234, 0, 0.25), 0 8px 10px -6px rgba(188, 234, 0, 0.25);
+    border-color: #BCEA00; /* Resalta el borde con tu color verde lima */
+}
+        body {
+            font-family: 'Nunito', sans-serif;
+            background-color: #BCEA00;
+            color: #181818;
+            -webkit-tap-highlight-color: transparent;
+        }
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Fredoka', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #a2ce00;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #181818;
+            border-radius: 4px;
+        }
+        /* Mobile Navbar Blur Effect */
+        .glass-nav-light {
+            background: rgba(188, 234, 0, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        /* Mascot Floating Animation */
+        @keyframes floatMascot {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(2deg); }
+        }
+        .animate-mascot {
+            animation: floatMascot 3s ease-in-out infinite;
+        }
+        <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            color: #181818;
+            -webkit-tap-highlight-color: transparent;
+        }
+        h1, h2, h3, h4, .font-heading {
+            font-family: 'Fredoka', sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #a2ce00;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #181818;
+            border-radius: 4px;
+        }
+        /* Mobile Navbar Blur Effect */
+        .glass-nav-light {
+            background: rgba(188, 234, 0, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        /* Mascot Floating Animation */
+        @keyframes floatMascot {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-6px) rotate(2deg); }
+        }
+        .animate-mascot {
+            animation: floatMascot 3s ease-in-out infinite;
+        }
+
+        /* Textura tipo escarcha (polvo de cristal ultra fino) */
+        .bg-grain {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='frostFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='4.5' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.18 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23frostFilter)'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col pb-24 md:pb-8 bg-cover bg-center bg-no-repeat bg-fixed relative text-white" style="background-image: url('fondo.png');">
+
+    <!-- Capa de textura tipo escarcha -->
+    <div class="absolute inset-0 bg-grain z-0 pointer-events-none"></div>
+
+    <!-- Contenedor principal de la interfaz (z-10 para estar por encima del fondo y texturas) -->
+    <div class="relative z-10 flex flex-col min-h-screen w-full">
+    
+  <!-- TOP CONTAINER CUADRADO PARA LOGO ANIMADO (MP4) -->
+<div class="max-w-xs mx-auto px-4 pt-4 w-full">
+    <div class="bg-brand-dark p-4 rounded-3xl border-2 border-brand-dark/20 shadow-xl overflow-hidden flex flex-col items-center justify-center aspect-square relative">
+        <video autoplay loop muted playsinline class="w-full h-full object-contain rounded-2xl" onerror="this.style.display='none'; document.getElementById('topLogoFallback').classList.remove('hidden');">
+            <source src="logoanimado.mp4" type="video/mp4">
+        </video>
+        <!-- Imagen fallback si no se detecta logo.mp4 -->
+        <div id="topLogoFallback" class="hidden flex flex-col items-center justify-center text-center space-y-2">
+            <img src="copimascot.png" alt="Mascota VCOPI" class="h-16 w-auto object-contain animate-mascot" onerror="this.onerror=null; this.src='LOGOVERDE.png';">
+            <div>
+                <h1 class="font-heading font-extrabold text-2xl text-brand-lime">VCOPI</h1>
+                <p class="text-xs text-white font-bold">Tu Impreso de Confianza</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+    <!-- HEADER & NAVBAR MOBILE FIRST -->
+    <header class="sticky top-0 z-40 glass-nav-light border-b border-brand-dark/10 px-4 py-3 shadow-sm mt-3">
+        <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+            <div>
+                <h1 class="font-heading font-extrabold text-2xl tracking-wide text-brand-dark leading-none">VCOPI</h1>
+                <p class="text-[10px] text-brand-dark/80 font-extrabold tracking-wider uppercase">Catálogo de Servicios</p>
+            </div>
+
+            <!-- Tasa BCV & Currency Toggle -->
+            <div class="flex items-center space-x-2">
+                <div class="bg-brand-dark px-3 py-1.5 rounded-2xl text-right shadow-sm border border-black/10">
+                    <span class="text-[9px] text-gray-400 font-bold uppercase block">Tasa BCV</span>
+                    <span id="bcvHeaderDisplay" class="text-xs font-mono font-extrabold text-brand-lime">Bs. 889.26</span>
+                </div>
+                <!-- Currency Toggle -->
+                <button onclick="toggleCurrencyView()" id="currencyToggleBtn" class="bg-brand-dark text-white px-3 py-1.5 rounded-2xl font-heading font-extrabold text-xs shadow hover:bg-gray-800 transition-transform active:scale-95 border border-black/10">
+                    REF / Bs.
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- CONTACT BOTONES SEPARADOS VISTOSOS (WHATSAPP & INSTAGRAM) -->
+    <div class="max-w-xl mx-auto px-4 pt-4 grid grid-cols-1 sm:grid-cols-2 gap-3">
+        <!-- Botón WhatsApp -->
+        <a href="https://wa.me/584145830695" target="_blank" class="bg-emerald-600 hover:bg-emerald-700 text-white p-3.5 rounded-2xl shadow-lg border-2 border-emerald-800 flex items-center justify-center space-x-3 transition-transform active:scale-95 group">
+            <i class="fa-brands fa-whatsapp text-2xl group-hover:scale-110 transition-transform"></i>
+            <div class="text-left">
+                <span class="text-[10px] uppercase font-bold text-emerald-200 block leading-tight">Escríbenos al</span>
+                <span class="font-heading font-extrabold text-base tracking-wide font-mono">0414 583 0695</span>
+            </div>
+        </a>
+
+        <!-- Botón Instagram -->
+        <a href="https://instagram.com/copiasve" target="_blank" class="bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 hover:opacity-95 text-white p-3.5 rounded-2xl shadow-lg border-2 border-pink-700 flex items-center justify-center space-x-3 transition-transform active:scale-95 group">
+            <i class="fa-brands fa-instagram text-2xl group-hover:scale-110 transition-transform"></i>
+            <div class="text-left">
+                <span class="text-[10px] uppercase font-bold text-pink-200 block leading-tight">Síguenos en</span>
+                <span class="font-heading font-extrabold text-base tracking-wide">@copiasve</span>
+            </div>
+        </a>
+    </div>
+
+    <!-- HERO SECTION -->
+    <section class="px-4 py-4 max-w-6xl mx-auto text-center space-y-3">
+        <div class="inline-flex items-center space-x-2 bg-brand-dark text-white px-4 py-1 rounded-full text-xs font-bold shadow-sm">
+            <span class="w-2.5 h-2.5 rounded-full bg-brand-lime animate-ping"></span>
+            <span>IMPRESIONES DE CALIDAD</span>
+        </div>
+      <h2 class="text-3xl sm:text-5xl font-extrabold text-white font-heading tracking-tight">
+            Conoce nuestros servicios
+        </h2>
+
+        <!-- LÍNEA INFORMATIVA SOBRE TASA BCV -->
+        <div class="bg-brand-dark/90 text-white text-[11px] sm:text-xs font-bold py-2 px-4 rounded-2xl max-w-xl mx-auto border border-black/20 shadow-sm flex items-center justify-center space-x-2">
+            <i class="fa-solid fa-circle-info text-brand-lime text-sm"></i>
+            <span>Todos los precios están indexados a la tasa oficial del dólar BCV y se actualizan diariamente.</span>
+        </div>
+
+        <!-- INPUT OCULTO: Mantiene la compatibilidad con tu script de renderizado JS -->
+        <input type="hidden" id="searchInput" value="">
+
+        <!-- CATALOG GRID -->
+        <main class="px-4 max-w-6xl mx-auto w-full flex-1 mt-6">
+            <div id="catalogGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                <!-- Cards rendered dynamically via JS -->
+            </div>
+        </main>
+
+    <!-- FLOATING CART BAR / BOTÓN PRINCIPAL COTIZAR -->
+    <div id="floatingCartBar" class="fixed bottom-0 left-0 right-0 z-40 p-4 glass-nav-light border-t border-brand-dark/10 transform translate-y-full transition-transform duration-300 shadow-2xl">
+        <div class="max-w-6xl mx-auto flex items-center justify-between gap-3">
+            <div>
+                <span class="text-[10px] text-brand-dark/70 font-extrabold uppercase tracking-wider block">Tu Cotización</span>
+                <div class="flex items-baseline space-x-2">
+                    <span id="cartTotalBs" class="font-mono text-lg font-extrabold text-brand-dark">Bs. 0.00</span>
+                    <span id="cartTotalRef" class="font-mono text-xs text-brand-dark/80 font-bold">(REF 0.00)</span>
+                </div>
+            </div>
+            <div class="flex items-center space-x-2">
+                <button onclick="toggleCartModal()" class="bg-brand-dark text-white p-3.5 rounded-2xl flex items-center justify-center relative active:scale-95 transition-transform shadow">
+                    <i class="fa-solid fa-cart-shopping text-base"></i>
+                    <span id="cartBadge" class="absolute -top-1.5 -right-1.5 bg-white text-brand-dark font-mono text-[10px] font-extrabold w-5 h-5 rounded-full flex items-center justify-center border-2 border-brand-dark">0</span>
+                </button>
+                <!-- BOTÓN PRINCIPAL "COTIZAR" -->
+                <button onclick="sendWhatsAppOrder()" class="bg-emerald-600 hover:bg-emerald-700 text-white font-heading font-extrabold text-sm px-6 py-3.5 rounded-2xl shadow-xl transition-all active:scale-95 flex items-center space-x-2 uppercase tracking-wide">
+                    <i class="fa-brands fa-whatsapp text-xl"></i>
+                    <span>COTIZAR</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: DETALLE DEL SERVICIO -->
+    <div id="serviceModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-brand-darkCard rounded-3xl border border-gray-800 shadow-2xl w-full max-w-md p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-start border-b border-gray-800 pb-3">
+                <div>
+                    <span id="modalCategory" class="text-[10px] uppercase font-extrabold px-2 py-0.5 rounded bg-brand-lime text-brand-dark">Categoría</span>
+                    <h3 id="modalTitle" class="text-xl font-heading font-bold text-white mt-1">Título del Servicio</h3>
+                </div>
+                <button onclick="closeServiceModal()" class="text-gray-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div id="modalMockup" class="w-full h-48 bg-brand-dark rounded-2xl border border-gray-800 flex items-center justify-center overflow-hidden">
+                <!-- Render SVG o Foto Real -->
+            </div>
+
+            <div class="space-y-3">
+                <p id="modalDesc" class="text-xs text-gray-300 leading-relaxed"></p>
+
+                <div class="bg-brand-dark p-3 rounded-2xl border border-gray-800 space-y-2 text-xs">
+                    <div class="flex justify-between text-gray-400"><span>Papel Recomendado:</span><span id="modalPaper" class="font-bold text-gray-200"></span></div>
+                    <div class="flex justify-between text-gray-400"><span>Gramaje / Calidad:</span><span id="modalQuality" class="font-bold text-gray-200"></span></div>
+                    <div class="flex justify-between text-gray-400"><span>Acabado / Formato:</span><span id="modalFinish" class="font-bold text-gray-200"></span></div>
+                </div>
+
+                <div class="flex items-center justify-between pt-2 border-t border-gray-800">
+                    <div>
+                        <span class="text-[10px] text-gray-400 uppercase font-bold block">Precio por Unidad/Pack</span>
+                        <span id="modalPriceBs" class="font-mono text-lg font-extrabold text-brand-lime">Bs. 0.00</span>
+                        <span id="modalPriceRef" class="font-mono text-xs text-gray-400 ml-1">REF 0.00</span>
+                    </div>
+                    <button id="modalAddBtn" onclick="" class="bg-brand-lime text-brand-dark font-heading font-extrabold text-xs px-4 py-2.5 rounded-xl shadow">Añadir a Cotización</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: CARRITO DE COTIZACIÓN DETALLADO -->
+    <div id="cartModal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-center justify-center p-4 backdrop-blur-sm">
+        <div class="bg-brand-darkCard rounded-3xl border border-gray-800 shadow-2xl w-full max-w-lg p-6 space-y-4 max-h-[90vh] overflow-y-auto">
+            <div class="flex justify-between items-center border-b border-gray-800 pb-3">
+                <div class="flex items-center space-x-2">
+                    <i class="fa-solid fa-receipt text-brand-lime text-lg"></i>
+                    <h3 class="text-lg font-heading font-bold text-white">Detalle de tu Cotización</h3>
+                </div>
+                <button onclick="toggleCartModal()" class="text-gray-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+
+            <div id="cartModalItems" class="space-y-3 divide-y divide-gray-800/50">
+                <!-- Items list -->
+            </div>
+
+            <div class="border-t border-gray-800 pt-3 space-y-2">
+                <div class="flex justify-between text-xs text-gray-400">
+                    <span>Tasa BCV Aplicada:</span>
+                    <span class="font-mono text-white">Bs. <span id="modalTasaBcv">889.26</span></span>
+                </div>
+                <div class="flex justify-between text-base font-extrabold text-white pt-2 border-t border-dashed border-gray-800">
+                    <span>Total Estimado:</span>
+                    <div class="text-right">
+                        <div id="modalCartTotalBs" class="font-mono text-xl text-brand-lime">Bs. 0.00</div>
+                        <div id="modalCartTotalRef" class="font-mono text-xs text-gray-400 font-normal">REF 0.00</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-2">
+                <button onclick="clearCart()" class="bg-brand-dark text-red-400 hover:bg-gray-800 font-bold text-xs py-3 rounded-2xl border border-gray-800">
+                    Vaciar Carrito
+                </button>
+                <button onclick="sendWhatsAppOrder()" class="bg-emerald-500 hover:bg-emerald-600 text-white font-heading font-extrabold text-xs py-3 rounded-2xl shadow flex items-center justify-center space-x-2">
+                    <i class="fa-brands fa-whatsapp text-lg"></i>
+                    <span>Enviar a WhatsApp</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // CONFIGURACIÓN DE SERVICIOS EN CÓDIGO
+        // Puedes cambiar la propiedad `realImage` poniendo la ruta directa a tu foto, ej: "fotos/copias_bn.jpg"
+        const SERVICES_DATA = [
+            {
+                id: "1793421539147",
+                name: "FOTOCOPIA B/N",
+                category: "Impresiones y Copias",
+                priceRef: 0.06,
+                paper: "Papel Bond 75gr / 90gr",
+                quality: "Inyección de Tinta EcoTank HD",
+                finish: "Carta / Oficio Sencillo",
+                desc: "Fotocopias nítidas procesadas con inyección de tinta continua de alta calidad sin manchas ni decoloración.",
+                mockupType: "photocopy_bn",
+                realImage: "copiabn.png"
+            },
+            {
+                id: "1793421693148",
+                name: "FOTOCOPIA COLOR",
+                category: "Impresiones y Copias",
+                priceRef: 0.12,
+                paper: "Papel Bond 75gr / 90gr",
+                quality: "Inyección de Tinta Color MicroPiezo",
+                finish: "Carta / Oficio",
+                desc: "Reproducción a color de alta resolución mediante inyección de tinta líquida, perfecta para esquemas y gráficos.",
+                mockupType: "photocopy_color",
+                realImage: "copiacolor.png"
+            },
+            {
+                id: "1793421750948",
+                name: "IMPRESION B/N",
+                category: "Impresiones y Copias",
+                priceRef: 0.10,
+                paper: "Papel Bond 75gr",
+                quality: "Inyección de Tinta Negra Continua",
+                finish: "Formato Estándar Carta/Oficio",
+                desc: "Impresión por inyección directa de alta definición para documentos legales, guías y textos.",
+                mockupType: "print_bn",
+                realImage: "impresionbn.png"
+            },
+            {
+                id: "1793421901866",
+                name: "IMPRESION COLOR SENCILLA",
+                category: "Impresiones y Copias",
+                priceRef: 0.20,
+                paper: "Papel Bond Premium",
+                quality: "Inyección de Tinta 5760 x 1440 DPI",
+                finish: "Carta / Oficio",
+                desc: "Impresión ágil por inyección de tinta con vivos colores para proyectos, trabajos escolares e informes.",
+                mockupType: "print_color",
+                realImage: "impresioncolormedio.png"
+            },
+            {
+                id: "1793421995634",
+                name: "IMPRESION FULL COLOR",
+                category: "Impresiones y Copias",
+                priceRef: 0.40,
+                paper: "Opalina 200g / Glassé 115g / Fotográfico",
+                quality: "Inyección Fotográfica HD Cobertura 100%",
+                finish: "Brillante / Mate",
+                desc: "Impresión por inyección de tintas pigmentadas fotográficas de alta densidad para imágenes e ilustraciones exigentes.",
+                mockupType: "print_fullcolor",
+                realImage: "impresionfullcolor.png"
+            },
+            {
+                id: "1793422207344",
+                name: "TRIPTICO AMBAS CARAS FULL COLOR",
+                category: "Papelería Publicitaria",
+                priceRef: 1.90,
+                paper: "Glassé 115g / Opalina 200g",
+                quality: "Inyección Dúplex HD con Plegado",
+                finish: "Folleto 3 Cuerpos",
+                desc: "Trípticos promocionales impresos en inyección de tinta de alta cobertura por ambas caras con plegado exacto.",
+                mockupType: "triptico",
+                realImage: "triptico.png"
+            },
+            {
+                id: "1793422473393",
+                name: "TARJETAS DE PRESENTACIÓN (PACK 100)",
+                category: "Papelería Publicitaria",
+                priceRef: 10.00,
+                paper: "Glassé 250g / Cartulina Opalina 200g",
+                quality: "Inyección HD Ultra-Fina",
+                finish: "Corte Preciso 9x5 cm",
+                desc: "Pack de 100 tarjetas de presentación impresas en inyección de tinta con excelente nitidez y rigidez.",
+                mockupType: "business_cards",
+                realImage: "tarjetas.png"
+            },
+            {
+                id: "1793422660936",
+                name: "FLAYERS AMBAS CARAS FULL COLOR (PACK DE 100)",
+                category: "Papelería Publicitaria",
+                priceRef: 7.00,
+                paper: "Glassé 115g / Bond Premium",
+                quality: "Inyección de Tinta Continua",
+                finish: "Corte Media Carta / Estándar",
+                desc: "Pack de 100 volantes publicitarios impresos a dos caras full color con la intensidad de inyección de tinta.",
+                mockupType: "flyers",
+                realImage: "flayers.png"
+            },
+            {
+                id: "1793423201731",
+                name: "ETIQUETAS 4X4CM (PACK DE 50)",
+                category: "Etiquetas y Marcalibros",
+                priceRef: 3.00,
+                paper: "Papel Fotográfico Autoadhesivo",
+                quality: "Inyección de Tinta Brillante HD",
+                finish: "Troquelado Cuadrado 4x4cm",
+                desc: "Pack de 50 stickers adhesivos recortados con impresión fotográfica por inyección de tinta resistente.",
+                mockupType: "stickers",
+                realImage: "etiquetas.png"
+            },
+            {
+                id: "1793423482588",
+                name: "FOTO TIPO CARNET (PACK DE 12)",
+                category: "Fotografías y Especiales",
+                priceRef: 3.00,
+                paper: "Papel Fotográfico Premium Davey / FYM",
+                quality: "Inyección Fotográfica 6 Tintas HD",
+                finish: "Corte Carnet Estándar",
+                desc: "Pack de 12 fotos carnet impresas por inyección fotográfica profesional para cédula, pasaporte y documentos.",
+                mockupType: "passport_photo",
+                realImage: "fotostipocarnet.png"
+            },
+            {
+                id: "1793425780269",
+                name: "MARCALIBROS 5 CM X 15 CM (PACK 12)",
+                category: "Etiquetas y Marcalibros",
+                priceRef: 4.00,
+                paper: "Cartulina Opalina 200g / Glassé 250g",
+                quality: "Inyección de Tinta Full Color",
+                finish: "Formato 5x15 cm",
+                desc: "Pack de 12 marcalibros impresos en inyección de tinta fotográfica con acabados vívidos e impecables.",
+                mockupType: "bookmarks",
+                realImage: "marcalibros.png"
+            },
+            {
+                id: "1793426366595",
+                name: "CALENDARIOS TIPO CARPA EN OPALINA 200 GRS (PACK 20)",
+                category: "Fotografías y Especiales",
+                priceRef: 14.99,
+                paper: "Cartulina Opalina 200g Firme",
+                quality: "Inyección de Tinta HD Escritorio",
+                finish: "Plegado Auto-Sostenible Tipo Carpa",
+                desc: "Pack de 20 calendarios publicitarios de mesa impresos mediante inyección de tinta de larga durabilidad.",
+                mockupType: "calendar",
+                realImage: "calendario.png"
+            }
+        ];
+
+        // STATE MANAGEMENT
+        let bcvRate = 889.26;
+        let selectedCategory = 'all';
+        let showInRef = false;
+        let cart = [];
+
+       window.onload = async function() {
+    try {
+        // Consultamos una API pública de tasa BCV en Venezuela
+        const response = await fetch('https://ve.dolarapi.com/v1/dolares/bcv');
+        const data = await response.json();
+        
+        if (data && data.promedio) {
+            bcvRate = data.promedio; // Asigna el valor real del BCV del día
+            // Actualizamos el texto en el header de la página automáticamente
+            document.getElementById('bcvHeaderDisplay').innerText = `Bs. ${bcvRate.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+    } catch (error) {
+        console.warn("No se pudo obtener la tasa en línea, usando valor por defecto:", error);
+    }
+    
+    renderCatalog();
+};
+
+        function toggleCurrencyView() {
+            showInRef = !showInRef;
+            document.getElementById('currencyToggleBtn').innerText = showInRef ? 'REF ($)' : 'Bs. BCV';
+            renderCatalog();
+        }
+
+        function formatPrice(priceRef) {
+            if (showInRef) return `REF ${priceRef.toFixed(2)}`;
+            const bsVal = priceRef * bcvRate;
+            return `Bs. ${bsVal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+        }
+
+        function formatAltPrice(priceRef) {
+            if (showInRef) {
+                const bsVal = priceRef * bcvRate;
+                return `Bs. ${bsVal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }
+            return `REF ${priceRef.toFixed(2)}`;
+        }
+
+        function renderCatalog() {
+            const grid = document.getElementById('catalogGrid');
+            const searchStr = document.getElementById('searchInput').value.toLowerCase().trim();
+            grid.innerHTML = '';
+
+            let filtered = SERVICES_DATA.filter(serv => {
+                const matchesCat = selectedCategory === 'all' || serv.category === selectedCategory;
+                const matchesSearch = serv.name.toLowerCase().includes(searchStr) || (serv.desc && serv.desc.toLowerCase().includes(searchStr));
+                return matchesCat && matchesSearch;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="col-span-full py-12 text-center text-brand-dark space-y-2">
+                        <i class="fa-solid fa-box-open text-4xl mb-2 text-brand-dark/50"></i>
+                        <p class="text-sm font-bold">No encontramos servicios con ese criterio.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(service => {
+                const cartItem = cart.find(i => i.serviceId === service.id);
+                const currentQty = cartItem ? cartItem.qty : 0;
+                
+                // Si existe `realImage`, la carga. De lo contrario, muestra el SVG por defecto.
+                const mediaContainer = service.realImage ? 
+                    `<img src="${service.realImage}" alt="${service.name}" class="w-full h-full object-cover rounded-2xl">` : 
+                    getSVGRepresentation(service.mockupType || 'default');
+
+                grid.innerHTML += `
+                    <div class="bg-brand-dark text-white border border-black/10 rounded-3xl p-4 flex flex-col justify-between hover:border-black transition-all shadow-xl group relative">
+                        <div class="space-y-3">
+                            <div onclick="openServiceModal('${service.id}')" class="w-full h-44 bg-brand-darkCard rounded-2xl border border-gray-800 flex items-center justify-center p-2 cursor-pointer group-hover:bg-brand-darkLight transition-colors relative overflow-hidden">
+                                ${mediaContainer}
+                                <span class="absolute bottom-2 right-2 bg-brand-dark/90 text-[9px] font-bold text-brand-lime px-2 py-0.5 rounded-full border border-gray-800">Ver Detalle</span>
+                            </div>
+
+                            <div>
+                                <span class="text-[9px] text-brand-lime font-extrabold uppercase tracking-wider block">${service.category}</span>
+                                <h3 onclick="openServiceModal('${service.id}')" class="font-heading font-bold text-base text-white group-hover:text-brand-lime transition-colors cursor-pointer">${service.name}</h3>
+                                <p class="text-xs text-gray-300 line-clamp-2 mt-1">${service.desc || 'Sin descripción'}</p>
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-gray-800 flex items-center justify-between">
+                            <div>
+                                <div class="font-mono text-base font-extrabold text-brand-lime">${formatPrice(service.priceRef)}</div>
+                                <div class="font-mono text-[10px] text-gray-400">${formatAltPrice(service.priceRef)}</div>
+                            </div>
+
+                            <!-- Cart Controls -->
+                            <div class="flex items-center space-x-1 bg-brand-darkCard rounded-xl p-1 border border-gray-800">
+                                ${currentQty > 0 ? `
+                                    <button onclick="updateQty('${service.id}', -1)" class="w-7 h-7 bg-brand-dark text-white font-bold rounded-lg flex items-center justify-center hover:bg-gray-700 active:scale-90">-</button>
+                                    <span class="px-2 font-mono text-xs font-bold text-white">${currentQty}</span>
+                                    <button onclick="updateQty('${service.id}', 1)" class="w-7 h-7 bg-brand-lime text-brand-dark font-bold rounded-lg flex items-center justify-center hover:bg-brand-limeHover active:scale-90">+</button>
+                                ` : `
+                                    <button onclick="updateQty('${service.id}', 1)" class="px-3 py-1.5 bg-brand-lime text-brand-dark font-heading font-extrabold text-xs rounded-lg flex items-center space-x-1 shadow active:scale-95">
+                                        <i class="fa-solid fa-plus text-xs"></i>
+                                        <span>Añadir</span>
+                                    </button>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function openServiceModal(serviceId) {
+            const service = SERVICES_DATA.find(s => s.id === serviceId);
+            if (!service) return;
+
+            document.getElementById('modalCategory').innerText = service.category;
+            document.getElementById('modalTitle').innerText = service.name;
+            document.getElementById('modalDesc').innerText = service.desc || 'Sin descripción detallada';
+            document.getElementById('modalPaper').innerText = service.paper || 'Estándar';
+            document.getElementById('modalQuality').innerText = service.quality || 'Inyección de Tinta HD';
+            document.getElementById('modalFinish').innerText = service.finish || 'Carta/Oficio';
+
+            const bsVal = service.priceRef * bcvRate;
+            document.getElementById('modalPriceBs').innerText = `Bs. ${bsVal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('modalPriceRef').innerText = `REF ${service.priceRef.toFixed(2)}`;
+
+            const mediaContainer = service.realImage ? 
+                `<img src="${service.realImage}" alt="${service.name}" class="w-full h-full object-cover rounded-2xl">` : 
+                getSVGRepresentation(service.mockupType || 'default');
+
+            document.getElementById('modalMockup').innerHTML = mediaContainer;
+            document.getElementById('modalAddBtn').onclick = function() {
+                updateQty(service.id, 1);
+                closeServiceModal();
+            };
+
+            document.getElementById('serviceModal').classList.remove('hidden');
+        }
+
+        // ENVIAR SOLICITUD A WHATSAPP
+        function sendWhatsAppOrder() {
+            if (cart.length === 0) return;
+
+            const phone = "584145830695"; // Número oficial VCOPI
+            let totalRef = 0;
+            let message = `*¡Hola VCOPI! Quisiera cotizar los siguientes servicios de impresión:*\n\n`;
+
+            cart.forEach(item => {
+                const s = SERVICES_DATA.find(srv => srv.id === item.serviceId);
+                if (s) {
+                    const subRef = s.priceRef * item.qty;
+                    const subBs = subRef * bcvRate;
+                    totalRef += subRef;
+                    message += `▪️ *${item.qty}x* ${s.name}\n   Subtotal: Bs. ${subBs.toFixed(2)} _(REF ${subRef.toFixed(2)})_\n`;
+                }
+            });
+
+            const totalBs = totalRef * bcvRate;
+
+            message += `\n--------------------------------\n`;
+            message += `*TOTAL ESTIMADO:* Bs. ${totalBs.toFixed(2)}\n`;
+            message += `*REFERENCIA:* REF ${totalRef.toFixed(2)}\n`;
+            message += `*TASA BCV APLICADA:* Bs. ${bcvRate.toFixed(2)}\n\n`;
+            message += `Quedo a la espera para coordinar el envío de los archivos. ¡Gracias!`;
+
+            const encoded = encodeURIComponent(message);
+            window.open(`https://wa.me/${phone}?text=${encoded}`, '_blank');
+        }
+
+        function filterCategory(cat) {
+            selectedCategory = cat;
+            document.querySelectorAll('.cat-filter-btn').forEach(btn => {
+                if ((cat === 'all' && btn.innerText.includes('Todos')) || btn.innerText.includes(cat)) {
+                    btn.className = "cat-filter-btn px-4 py-2 rounded-xl bg-brand-dark text-white whitespace-nowrap shadow transition-all";
+                } else {
+                    btn.className = "cat-filter-btn px-4 py-2 rounded-xl bg-white/70 text-brand-dark border border-black/10 whitespace-nowrap transition-all hover:bg-white";
+                }
+            });
+            renderCatalog();
+        }
+
+        function updateQty(serviceId, delta) {
+            const idx = cart.findIndex(i => i.serviceId === serviceId);
+            if (idx > -1) {
+                const newQty = cart[idx].qty + delta;
+                if (newQty <= 0) cart.splice(idx, 1);
+                else cart[idx].qty = newQty;
+            } else if (delta > 0) {
+                cart.push({ serviceId, qty: 1 });
+            }
+            renderCatalog();
+            updateCartFloatingUI();
+        }
+
+        function clearCart() {
+            cart = [];
+            renderCatalog();
+            updateCartFloatingUI();
+            toggleCartModal();
+        }
+
+        function updateCartFloatingUI() {
+            const bar = document.getElementById('floatingCartBar');
+            const badge = document.getElementById('cartBadge');
+            const totalBs = document.getElementById('cartTotalBs');
+            const totalRef = document.getElementById('cartTotalRef');
+
+            if (cart.length === 0) {
+                bar.classList.add('translate-y-full');
+                return;
+            }
+
+            let totalRefVal = 0;
+            let totalQty = 0;
+
+            cart.forEach(item => {
+                const s = SERVICES_DATA.find(srv => srv.id === item.serviceId);
+                if (s) {
+                    totalRefVal += s.priceRef * item.qty;
+                    totalQty += item.qty;
+                }
+            });
+
+            const totalBsVal = totalRefVal * bcvRate;
+            badge.innerText = totalQty;
+            totalBs.innerText = `Bs. ${totalBsVal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            totalRef.innerText = `(REF ${totalRefVal.toFixed(2)})`;
+            bar.classList.remove('translate-y-full');
+        }
+
+        function toggleCartModal() {
+            const modal = document.getElementById('cartModal');
+            if (modal.classList.contains('hidden')) {
+                renderCartModalItems();
+                modal.classList.remove('hidden');
+            } else {
+                modal.classList.add('hidden');
+            }
+        }
+
+        function closeServiceModal() {
+            document.getElementById('serviceModal').classList.add('hidden');
+        }
+
+        function renderCartModalItems() {
+            const container = document.getElementById('cartModalItems');
+            container.innerHTML = '';
+
+            let totalRefVal = 0;
+            cart.forEach(item => {
+                const s = SERVICES_DATA.find(srv => srv.id === item.serviceId);
+                if (s) {
+                    const itemTotRef = s.priceRef * item.qty;
+                    const itemTotBs = itemTotRef * bcvRate;
+                    totalRefVal += itemTotRef;
+
+                    container.innerHTML += `
+                        <div class="py-2 flex items-center justify-between">
+                            <div class="pr-2">
+                                <h5 class="text-xs font-bold text-white">${s.name}</h5>
+                                <span class="text-[10px] text-gray-400 font-mono">REF ${s.priceRef.toFixed(2)} c/u</span>
+                            </div>
+                            <div class="flex items-center space-x-2">
+                                <span class="font-mono text-xs font-bold text-brand-lime">Bs. ${itemTotBs.toFixed(2)}</span>
+                                <div class="flex items-center bg-brand-dark border border-gray-700 rounded-lg">
+                                    <button onclick="updateQty('${s.id}', -1); renderCartModalItems();" class="px-2 py-0.5 text-xs text-white">-</button>
+                                    <span class="px-2 text-xs font-mono font-bold text-brand-lime">${item.qty}</span>
+                                    <button onclick="updateQty('${s.id}', 1); renderCartModalItems();" class="px-2 py-0.5 text-xs text-white">+</button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+            });
+
+            const totalBsVal = totalRefVal * bcvRate;
+            document.getElementById('modalTasaBcv').innerText = bcvRate.toFixed(2);
+            document.getElementById('modalCartTotalBs').innerText = `Bs. ${totalBsVal.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            document.getElementById('modalCartTotalRef').innerText = `REF ${totalRefVal.toFixed(2)}`;
+        }
+
+        // GENERADOR DE ILUSTRACIONES SVG SI NO HAY IMAGEN CARGADA
+        function getSVGRepresentation(type) {
+            const svgMap = {
+                photocopy_bn: `<svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>`,
+                photocopy_color: `<svg class="w-16 h-16 text-brand-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>`,
+                print_bn: `<svg class="w-16 h-16 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z"></path></svg>`,
+                print_color: `<svg class="w-16 h-16 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01"></path></svg>`,
+                print_fullcolor: `<svg class="w-16 h-16 text-amber-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path></svg>`,
+                triptico: `<svg class="w-16 h-16 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`,
+                business_cards: `<svg class="w-16 h-16 text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 6H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V8a2 2 0 00-2-2h-5m-4 0V5a2 2 0 012-2h2a2 2 0 012 2v1m-6 0h6"></path></svg>`,
+                flyers: `<svg class="w-16 h-16 text-brand-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>`,
+                stickers: `<svg class="w-16 h-16 text-pink-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path></svg>`,
+                passport_photo: `<svg class="w-16 h-16 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>`,
+                bookmarks: `<svg class="w-16 h-16 text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z"></path></svg>`,
+                calendar: `<svg class="w-16 h-16 text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>`
+            };
+            return svgMap[type] || `<svg class="w-16 h-16 text-brand-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`;
+        }
+    </script>
+</body>
+</html>
