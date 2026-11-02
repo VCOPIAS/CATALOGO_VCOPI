@@ -777,6 +777,35 @@
             };
             return svgMap[type] || `<svg class="w-16 h-16 text-brand-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`;
         }
+        // Carga segura de la tasa BCV
+fetch('./tasa.json')
+  .then(response => {
+    if (!response.ok) throw new Error('No se encontró tasa.json');
+    return response.json();
+  })
+  .then(data => {
+    const tasaBcv = data.tasa_bcv;
+
+    // 1. Mostrar la tasa en la cabecera/banner si existe el elemento
+    const contenedorTasa = document.getElementById('tasa-bcv');
+    if (contenedorTasa) {
+      contenedorTasa.innerText = tasaBcv.toFixed(2);
+    }
+
+    // 2. Recalcular solo los elementos que tengan el atributo de precio en REF
+    document.querySelectorAll('[data-precio-ref]').forEach(elemento => {
+      const precioRef = parseFloat(elemento.getAttribute('data-precio-ref'));
+      if (!isNaN(precioRef)) {
+        const precioBolivares = (precioRef * tasaBcv).toFixed(2);
+        // Si tienes una etiqueta interna para los Bs., actualiza esa; de lo contrario, el texto completo
+        const elBs = elemento.querySelector('.precio-bs') || elemento;
+        elBs.innerText = `${precioBolivares} Bs.`;
+      }
+    });
+  })
+  .catch(error => {
+    console.warn('La tasa no se pudo cargar, manteniendo precios por defecto:', error);
+  });
     </script>
 </body>
 </html>
