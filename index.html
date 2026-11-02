@@ -325,9 +325,8 @@
     </div>
 
     <!-- JAVASCRIPT LOGIC -->
-    <script>
+ <script>
         // CONFIGURACIÓN DE SERVICIOS EN CÓDIGO
-        // Puedes cambiar la propiedad `realImage` poniendo la ruta directa a tu foto, ej: "fotos/copias_bn.jpg"
         const SERVICES_DATA = [
             {
                 id: "1793421539147",
@@ -476,28 +475,35 @@
         ];
 
         // STATE MANAGEMENT
-        let bcvRate = 889.26;
+        let bcvRate = 889.26; // Valor por defecto de respaldo
         let selectedCategory = 'all';
         let showInRef = false;
         let cart = [];
 
-       window.onload = async function() {
-    try {
-        // Consultamos una API pública de tasa BCV en Venezuela
-        const response = await fetch('https://ve.dolarapi.com/v1/dolares/bcv');
-        const data = await response.json();
-        
-        if (data && data.promedio) {
-            bcvRate = data.promedio; // Asigna el valor real del BCV del día
-            // Actualizamos el texto en el header de la página automáticamente
-            document.getElementById('bcvHeaderDisplay').innerText = `Bs. ${bcvRate.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
-        }
-    } catch (error) {
-        console.warn("No se pudo obtener la tasa en línea, usando valor por defecto:", error);
-    }
-    
-    renderCatalog();
-};
+        // Carga unificada al iniciar la página
+        window.onload = async function() {
+            try {
+                // Lee el archivo tasa.json generado automáticamente por tu GitHub Action
+                const response = await fetch('./tasa.json');
+                if (response.ok) {
+                    const data = await response.json();
+                    if (data && data.tasa_bcv) {
+                        bcvRate = data.tasa_bcv;
+                    }
+                }
+            } catch (error) {
+                console.warn("No se pudo cargar tasa.json local, usando respaldo:", error);
+            }
+
+            // Actualiza el indicador visual en el header
+            const headerDisplay = document.getElementById('bcvHeaderDisplay');
+            if (headerDisplay) {
+                headerDisplay.innerText = `Bs. ${bcvRate.toLocaleString('es-VE', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+            }
+
+            // Dibuja el catálogo con los precios actualizados a la tasa correcta
+            renderCatalog();
+        };
 
         function toggleCurrencyView() {
             showInRef = !showInRef;
@@ -544,7 +550,6 @@
                 const cartItem = cart.find(i => i.serviceId === service.id);
                 const currentQty = cartItem ? cartItem.qty : 0;
                 
-                // Si existe `realImage`, la carga. De lo contrario, muestra el SVG por defecto.
                 const mediaContainer = service.realImage ? 
                     `<img src="${service.realImage}" alt="${service.name}" class="w-full h-full object-cover rounded-2xl">` : 
                     getSVGRepresentation(service.mockupType || 'default');
@@ -617,11 +622,10 @@
             document.getElementById('serviceModal').classList.remove('hidden');
         }
 
-        // ENVIAR SOLICITUD A WHATSAPP
         function sendWhatsAppOrder() {
             if (cart.length === 0) return;
 
-            const phone = "584145830695"; // Número oficial VCOPI
+            const phone = "584145830695";
             let totalRef = 0;
             let message = `*¡Hola VCOPI! Quisiera cotizar los siguientes servicios de impresión:*\n\n`;
 
@@ -759,7 +763,6 @@
             document.getElementById('modalCartTotalRef').innerText = `REF ${totalRefVal.toFixed(2)}`;
         }
 
-        // GENERADOR DE ILUSTRACIONES SVG SI NO HAY IMAGEN CARGADA
         function getSVGRepresentation(type) {
             const svgMap = {
                 photocopy_bn: `<svg class="w-16 h-16 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"></path></svg>`,
@@ -777,35 +780,6 @@
             };
             return svgMap[type] || `<svg class="w-16 h-16 text-brand-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`;
         }
-        // Carga segura de la tasa BCV
-fetch('./tasa.json')
-  .then(response => {
-    if (!response.ok) throw new Error('No se encontró tasa.json');
-    return response.json();
-  })
-  .then(data => {
-    const tasaBcv = data.tasa_bcv;
-
-    // 1. Mostrar la tasa en la cabecera/banner si existe el elemento
-    const contenedorTasa = document.getElementById('tasa-bcv');
-    if (contenedorTasa) {
-      contenedorTasa.innerText = tasaBcv.toFixed(2);
-    }
-
-    // 2. Recalcular solo los elementos que tengan el atributo de precio en REF
-    document.querySelectorAll('[data-precio-ref]').forEach(elemento => {
-      const precioRef = parseFloat(elemento.getAttribute('data-precio-ref'));
-      if (!isNaN(precioRef)) {
-        const precioBolivares = (precioRef * tasaBcv).toFixed(2);
-        // Si tienes una etiqueta interna para los Bs., actualiza esa; de lo contrario, el texto completo
-        const elBs = elemento.querySelector('.precio-bs') || elemento;
-        elBs.innerText = `${precioBolivares} Bs.`;
-      }
-    });
-  })
-  .catch(error => {
-    console.warn('La tasa no se pudo cargar, manteniendo precios por defecto:', error);
-  });
     </script>
 </body>
 </html>
