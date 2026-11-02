@@ -484,13 +484,12 @@
         window.onload = async function() {
             try {
                 // Lee el archivo tasa.json generado automáticamente por tu GitHub Action
-                const response = await fetch('./tasa.json');
+                const response = await fetch('./tasa.json?t=' + new Date().getTime());
                 if (response.ok) {
                     const data = await response.json();
                     if (data && data.tasa_bcv) {
                         bcvRate = data.tasa_bcv;
                     }
-                }
             } catch (error) {
                 console.warn("No se pudo cargar tasa.json local, usando respaldo:", error);
             }
