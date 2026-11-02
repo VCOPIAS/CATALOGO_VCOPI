@@ -777,6 +777,30 @@
             };
             return svgMap[type] || `<svg class="w-16 h-16 text-brand-lime" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>`;
         }
+        }// Cargar la tasa BCV actualizada desde el archivo JSON del repositorio
+fetch('./tasa.json')
+  .then(response => response.json())
+  .then(data => {
+    const tasaBcv = data.tasa_bcv;
+    
+    // Inyectar el valor en el elemento HTML destinado a la tasa
+    const contenedorTasa = document.getElementById('tasa-bcv');
+    if (contenedorTasa) {
+      contenedorTasa.innerText = tasaBcv.toFixed(2);
+    }
+
+    // Recalcular todos los elementos que tengan el atributo data-precio-ref
+    document.querySelectorAll('[data-precio-ref]').forEach(elemento => {
+      const precioRef = parseFloat(elemento.getAttribute('data-precio-ref'));
+      const precioBolivares = (precioRef * tasaBcv).toFixed(2);
+      
+      // Actualizar el texto visible con el monto en Bolívares
+      elemento.innerText = `${precioBolivares} VES`;
+    });
+  })
+  .catch(error => {
+    console.error('Error al cargar la tasa local:', error);
+  });
     </script>
 </body>
 </html>
